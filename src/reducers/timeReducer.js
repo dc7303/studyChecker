@@ -15,7 +15,7 @@ export default function timeReducer(state = initialState, action) {
   switch (action.type) {
     case types.CLOCK_START:
       return {
-        clockFormat: state.clockFormat
+        clockFormat: clock()
       };
 
     default:

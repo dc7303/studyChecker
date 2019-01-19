@@ -16,11 +16,13 @@ class Counter extends Component {
     super(props);
   }
   render() {
-    console.log(this.props.clockFormat);
     return (
       <div>
         <Graph />
-        <Time clockFormat={this.props.clockFormat} />
+        <Time
+          clockFormat={this.props.clockFormat}
+          clockHandler={this.props.clockHandler}
+        />
         <TimeCheck />
       </div>
     );
