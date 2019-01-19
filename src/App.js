@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Counter from './component/counter';
+
+const defaultProps = {};
+
+const propTypes = {};
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <div className="App">
-        Hello
-        <botton>press me</botton>
+      <div>
+        <Counter />
       </div>
     );
   }
 }
+
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
 export default App;
