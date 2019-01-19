@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import clock from './clock';
-
 const defaultProps = {};
 const propTypes = {};
 
@@ -15,7 +13,7 @@ class Time extends Component {
   render() {
     return (
       <div className="center">
-        <h1>{clockText}</h1>
+        <h1>{this.props.clockFormat}</h1>
         <h3>center</h3>
       </div>
     );
