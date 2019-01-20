@@ -1,0 +1,22 @@
+.right-left {
+  float: left;
+  padding-left: 15%;
+}
+
+.right-right {
+  float: right;
+  padding-right: 15%;
+}
+
+.right-bottom {
+  clear: left;
+}
+
+.right-top {
+  color: red;
+}
+
+.right-right .title,
+.right-left .title {
+  color: orange;
+}

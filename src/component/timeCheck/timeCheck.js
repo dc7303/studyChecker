@@ -10,8 +10,29 @@ class TimeCheck extends Component {
   render() {
     return (
       <div className="right">
-        <h1>Layout Test</h1>
-        <h3>right</h3>
+        <div className="right-top">
+          <h3>Time Checker</h3>
+        </div>
+        <div className="right-left">
+          <span className="title">Study</span>
+          <h5>01:22:13 학습</h5>
+          <h5>01:00:00 학습</h5>
+          <h5>00:56:13 학습</h5>
+          <h5>01:50:33 학습</h5>
+          <h5>02:30:10 학습</h5>
+          <h5>04:21:13 학습</h5>
+        </div>
+        <div className="right-right">
+          <span className="title">Rest</span>
+          <h5>00:20:31</h5>
+          <h5>00:20:31</h5>
+          <h5>00:20:31</h5>
+          <h5>00:20:31</h5>
+          <h5>00:20:31</h5>
+        </div>
+        <div className="right-bottom">
+          <span className="total">Total : 12:00:00 학습</span>
+        </div>
       </div>
     );
   }

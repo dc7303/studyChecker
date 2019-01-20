@@ -41,6 +41,9 @@ class Time extends Component {
   render() {
     return (
       <div className="center">
+        <div className="center-top">
+          <h3>I see your study</h3>
+        </div>
         <div>
           <h1>{this.props.clockFormat}</h1>
         </div>
