@@ -5,3 +5,15 @@ export function clockStart() {
     type: types.CLOCK_START
   };
 }
+
+export function studyStart() {
+  return {
+    type: types.STUDY_START
+  };
+}
+
+export function studyStop() {
+  return {
+    type: types.STUDY_STOP
+  };
+}

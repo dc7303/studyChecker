@@ -1,31 +1,58 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 
-const defaultProps = {
-  clockFormat: '00:00:00',
-  clockHandler: () => console.error('clockHandler undefined')
+const defaultFuncProps = funcName => {
+  return () => console.log(`${funcName} undefined`);
 };
+
+const defaultProps = {
+  clockFormat: '',
+  clockHandler: defaultFuncProps('clockHandler'),
+  studyStart: defaultFuncProps('studyStart'),
+  studyStop: defaultFuncProps('studyStop'),
+  startTime: '00:00:00',
+  endTime: '00:00:00'
+};
+
 const propTypes = {
   clockFormat: PropTypes.string,
-  clockHandler: PropTypes.func
+  clockHandler: PropTypes.func,
+  studyStart: PropTypes.func,
+  studyStop: PropTypes.func,
+  startTime: PropTypes.string,
+  endTime: PropTypes.string
 };
 
 class Time extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.timeHandler = this.timeHandler.bind(this);
   }
 
   timeHandler() {
-    console.log('출력');
     setInterval(this.props.clockHandler, 1000);
+  }
+
+  componentWillMount() {
+    this.timeHandler();
   }
 
   render() {
     return (
       <div className="center">
-        <h1 onClick={this.timeHandler}>{this.props.clockFormat}</h1>
-        <h3>center</h3>
+        <div>
+          <h1>{this.props.clockFormat}</h1>
+        </div>
+        <div>
+          Start : {this.props.startTime} <br />
+          End : {this.props.endTime}
+        </div>
+        <div>
+          <button onClick={this.props.studyStart}>Start</button>
+          <button onClick={this.props.studyStop}>Stop</button>
+          <button>Apply</button>
+        </div>
       </div>
     );
   }
