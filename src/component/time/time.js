@@ -12,6 +12,7 @@ const defaultProps = {
   clockHandler: defaultFuncProps('clockHandler'),
   studyStart: defaultFuncProps('studyStart'),
   studyStop: defaultFuncProps('studyStop'),
+  studyReset: defaultFuncProps('studyReset'),
   startTime: '',
   endTime: ''
 };
@@ -21,6 +22,7 @@ const propTypes = {
   clockHandler: PropTypes.func,
   studyStart: PropTypes.func,
   studyStop: PropTypes.func,
+  studyReset: PropTypes.func,
   startTime: PropTypes.string,
   endTime: PropTypes.string
 };
@@ -34,6 +36,7 @@ class Time extends Component {
     super(props);
     this.timeHandler = this.timeHandler.bind(this);
     this.confirmForAction = this.confirmForAction.bind(this);
+    this.resetHandler = this.resetHandler.bind(this);
   }
 
   timeHandler() {
@@ -95,6 +98,26 @@ class Time extends Component {
     }
   }
 
+  resetHandler() {
+    const studyReset = this.props.studyReset;
+    confirmAlert({
+      title: 'Confirm',
+      message: '초기화하시겠습니까? 초기화시 복구할 수 없습니다.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: studyReset
+        },
+        {
+          label: 'No',
+          onClick: () => {
+            return;
+          }
+        }
+      ]
+    });
+  }
+
   render() {
     return (
       <div className="center">
@@ -115,6 +138,7 @@ class Time extends Component {
           <button id="stopBtn" onClick={this.confirmForAction}>
             Stop
           </button>
+          <button onClick={this.resetHandler}>Reset</button>
         </div>
       </div>
     );
