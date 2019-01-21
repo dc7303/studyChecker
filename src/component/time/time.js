@@ -47,7 +47,7 @@ class Time extends Component {
         <div>
           <h1>{this.props.clockFormat}</h1>
         </div>
-        <div>
+        <div className="center-clock">
           Start : {this.props.startTime} <br />
           End : {this.props.endTime}
         </div>
