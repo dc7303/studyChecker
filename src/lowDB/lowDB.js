@@ -1,29 +1,27 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
 const adapter = new FileSync('db_data/db.json');
 const db = low(adapter);
 
-const shortid = require('shortid');
-
 db.defaults({ data: [] }).write();
 
-const generateId = shortid.generate();
+class DBHandler {
+  constructor() {
+    this.db = db;
+  }
 
-db.get('data')
-  .push({
-    saveDate: '2018-01-21 12:00:00',
-    studyTime: {
-      startTime: [
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00'
-      ],
-      endTime: [
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00'
-      ],
-      restTime: ['12:00:00', '12:00:00']
-    }
-  })
-  .write();
+  insertStudyTime(saveDate, startTime, endTime, restTime) {
+    db.get('data')
+      .push({
+        saveDate: saveDate,
+        studyTime: {
+          startTime: [startTime],
+          endTime: [endTime],
+          restTime: [restTime]
+        }
+      })
+      .write();
+  }
+}
+
+export default DBHandler;
