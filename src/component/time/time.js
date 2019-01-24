@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import db from '../../lowDB/lowDB';
+
 const defaultFuncProps = funcName => {
   return () => console.log(`${funcName} undefined`);
 };
@@ -103,7 +104,7 @@ class Time extends Component {
       };
     };
 
-    const endConfirmOption = (msgName, action) => {
+    const stopConfirmOption = (msgName, action) => {
       const resultMsg = `${msgName}하시겠습니까? 중지할 시 학습 시간이 기록이 반영되어 수정할 수 없습니다.`;
 
       return {
@@ -128,12 +129,13 @@ class Time extends Component {
         ]
       };
     };
+
     //event select
     if (targetId === 'startBtn') {
       confirmAlert(startConfirmOption(msgNameStart, studyStart));
     } else if (targetId === 'stopBtn') {
       if (this.props.startTime !== '' && this.props.startTime !== null) {
-        confirmAlert(endConfirmOption(msgNameStop, studyStop));
+        confirmAlert(stopConfirmOption(msgNameStop, studyStop));
       } else {
         alert('start 후 사용가능합니다.');
       }
