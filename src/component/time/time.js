@@ -27,29 +27,49 @@ const propTypes = {
   endTime: PropTypes.string
 };
 
+let _BEFOREDAY = '';
+
 /**
  * Component
  */
 class Time extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.timeHandler = this.timeHandler.bind(this);
     this.confirmForAction = this.confirmForAction.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
   }
 
+  /**
+   * clock 동작시키는 함수
+   */
   timeHandler() {
     setInterval(this.props.clockHandler, 1000);
   }
 
+  /**
+   * 날짜가 변경하는걸 감지하는 함수
+   */
+  todayChecker() {
+    const currentDay = this.props.clockFormat.slice(0, 10);
+
+    if (_BEFOREDAY !== currentDay) {
+      _BEFOREDAY = currentDay;
+    } else if (_BEFOREDAY === currentDay) {
+      //전체 자동 세이브 진행.
+    }
+  }
+
   /*
-    Clock on
+    Clock 
    */
   componentWillMount() {
     this.timeHandler();
   }
 
+  componentDidUpdate() {
+    this.todayChecker();
+  }
   /*
     react-confirm-alert()
    */
@@ -59,6 +79,7 @@ class Time extends Component {
     const msgNameStart = '시작';
     const msgNameStop = '중지';
     const targetId = event.target.id;
+    const currentTime = this.props.clockFormat;
     //react-confirm-alert option
     const startConfirmOption = (msgName, action) => {
       const resultMsg = `${msgName}하시겠습니까?`;
@@ -74,6 +95,7 @@ class Time extends Component {
           {
             label: 'No',
             onClick: () => {
+              alert(_BEFOREDAY);
               return;
             }
           }
