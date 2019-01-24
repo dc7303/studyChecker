@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
+import db from '../../lowDB/lowDB';
 const defaultFuncProps = funcName => {
   return () => console.log(`${funcName} undefined`);
 };
@@ -60,13 +60,8 @@ class Time extends Component {
     const msgNameStop = '중지';
     const targetId = event.target.id;
     //react-confirm-alert option
-    const confirmOption = (msgName, action) => {
-      let resultMsg = '';
-      if (msgName === msgNameStop) {
-        resultMsg = `${msgNameStop}하시겠습니까? 중지할 시 학습 시간이 기록이 반영되어 수정할 수 없습니다.`;
-      } else if (msgName === msgNameStart) {
-        resultMsg = `${msgNameStart}하시겠습니까?`;
-      }
+    const startConfirmOption = (msgName, action) => {
+      const resultMsg = `${msgName}하시겠습니까?`;
 
       return {
         title: 'Confirm',
@@ -86,12 +81,37 @@ class Time extends Component {
       };
     };
 
+    const endConfirmOption = (msgName, action) => {
+      const resultMsg = `${msgName}하시겠습니까? 중지할 시 학습 시간이 기록이 반영되어 수정할 수 없습니다.`;
+
+      return {
+        title: 'Confirm',
+        message: resultMsg,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => {
+              action();
+              db.get('data')
+                .push({ test: 'test' })
+                .write();
+            }
+          },
+          {
+            label: 'No',
+            onClick: () => {
+              return;
+            }
+          }
+        ]
+      };
+    };
     //event select
     if (targetId === 'startBtn') {
-      confirmAlert(confirmOption(msgNameStart, studyStart));
+      confirmAlert(startConfirmOption(msgNameStart, studyStart));
     } else if (targetId === 'stopBtn') {
       if (this.props.startTime !== '' && this.props.startTime !== null) {
-        confirmAlert(confirmOption(msgNameStop, studyStop));
+        confirmAlert(endConfirmOption(msgNameStop, studyStop));
       } else {
         alert('start 후 사용가능합니다.');
       }

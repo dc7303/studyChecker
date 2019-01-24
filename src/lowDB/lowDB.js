@@ -9,21 +9,4 @@ db.defaults({ data: [] }).write();
 
 const generateId = shortid.generate();
 
-db.get('data')
-  .push({
-    saveDate: '2018-01-21 12:00:00',
-    studyTime: {
-      startTime: [
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00'
-      ],
-      endTime: [
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00',
-        '2018-01-21 12:00:00'
-      ],
-      restTime: ['12:00:00', '12:00:00']
-    }
-  })
-  .write();
+export default db;
