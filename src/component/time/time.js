@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import DBHandler from '../../lowDB/lowDB';
+
+import * as confirmOption from '../../js/confirmAlertOption';
 
 const defaultFuncProps = funcName => {
-  return () => console.log(`${funcName} undefined`);
+  return () => alert(`${funcName} undefined`);
 };
 
 const defaultProps = {
@@ -10,8 +15,9 @@ const defaultProps = {
   clockHandler: defaultFuncProps('clockHandler'),
   studyStart: defaultFuncProps('studyStart'),
   studyStop: defaultFuncProps('studyStop'),
-  startTime: '00:00:00',
-  endTime: '00:00:00'
+  studyReset: defaultFuncProps('studyReset'),
+  startTime: '',
+  endTime: ''
 };
 
 const propTypes = {
@@ -19,23 +25,114 @@ const propTypes = {
   clockHandler: PropTypes.func,
   studyStart: PropTypes.func,
   studyStop: PropTypes.func,
+  studyReset: PropTypes.func,
   startTime: PropTypes.string,
   endTime: PropTypes.string
 };
 
+/**
+ * Current YYYY-MM-DD
+ */
+let _CURRENTDAY = '';
+
+/**
+ * Component
+ */
 class Time extends Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.timeHandler = this.timeHandler.bind(this);
+    this.confirmForAction = this.confirmForAction.bind(this);
+    this.resetHandler = this.resetHandler.bind(this);
+    this.saveStudyTime = this.saveStudyTime.bind(this);
   }
 
+  /**
+   * clock 동작시키는 함수
+   */
   timeHandler() {
     setInterval(this.props.clockHandler, 1000);
   }
 
+  /**
+   * 날짜가 변경하는걸 감지하는 함수
+   */
+  todayChecker() {
+    const currentDay = this.props.clockFormat.slice(0, 10);
+
+    if (_CURRENTDAY !== currentDay) {
+      _CURRENTDAY = currentDay;
+    } else if (_CURRENTDAY === currentDay) {
+      //전체 자동 세이브 진행.
+    }
+  }
+
   componentWillMount() {
+    //clock 동작 loop
     this.timeHandler();
+  }
+
+  componentDidUpdate() {
+    //현재시간 지속적으로 체크.
+    this.todayChecker();
+  }
+
+  /**
+   * studyTime save
+   * _CURRENTDAY = DB ojbect name
+   */
+  saveStudyTime() {
+    const startTime = this.props.startTime;
+    const endTime = this.props.endTime;
+
+    if (startTime === '' && startTime === null) {
+      alert('시작되지 않았습니다.');
+    } else if (endTime === '' && endTime === null) {
+      alert('종료되지 않았습니다.');
+    } else {
+      confirmAlert(
+        confirmOption.saveStudiedTime(
+          _CURRENTDAY,
+          startTime,
+          endTime,
+          this.props.studyReset
+        )
+      );
+    }
+  }
+
+  /**
+   * button handler
+   *
+   * @param {event} event
+   */
+  confirmForAction(event) {
+    const studyStart = this.props.studyStart;
+    const studyStop = this.props.studyStop;
+    const msgNameStart = '시작';
+    const msgNameStop = '중지';
+    const targetId = event.target.id;
+
+    //event select
+    if (targetId === 'startBtn') {
+      confirmAlert(
+        confirmOption.startConfirm(_CURRENTDAY, msgNameStart, studyStart)
+      );
+    } else if (targetId === 'stopBtn') {
+      if (this.props.startTime !== '' && this.props.startTime !== null) {
+        confirmAlert(confirmOption.stopConfirm(msgNameStop, studyStop));
+      } else {
+        alert('start 후 사용가능합니다.');
+      }
+    }
+  }
+
+  /**
+   * reset button handler
+   */
+  resetHandler() {
+    const studyReset = this.props.studyReset;
+    confirmAlert(confirmOption.studyReset(studyReset));
   }
 
   render() {
@@ -45,16 +142,22 @@ class Time extends Component {
           <h3>I see your study</h3>
         </div>
         <div>
-          <h1>{this.props.clockFormat}</h1>
+          <h1>{this.props.clockFormat.slice(0, 10)}</h1>
+          <h2>{this.props.clockFormat.slice(10, 19)}</h2>
         </div>
-        <div>
+        <div className="center-clock">
           Start : {this.props.startTime} <br />
           End : {this.props.endTime}
         </div>
-        <div>
-          <button onClick={this.props.studyStart}>Start</button>
-          <button onClick={this.props.studyStop}>Stop</button>
-          <button>Apply</button>
+        <div className="center-control">
+          <button id="startBtn" onClick={this.confirmForAction}>
+            Start
+          </button>
+          <button id="stopBtn" onClick={this.confirmForAction}>
+            Stop
+          </button>
+          <button onClick={this.saveStudyTime}>Save</button>
+          <button onClick={this.resetHandler}>Reset</button>
         </div>
       </div>
     );

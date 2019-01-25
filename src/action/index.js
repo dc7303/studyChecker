@@ -17,3 +17,9 @@ export function studyStop() {
     type: types.STUDY_STOP
   };
 }
+
+export function studyReset() {
+  return {
+    type: types.STUDY_RESET
+  };
+}

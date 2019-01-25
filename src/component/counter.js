@@ -26,6 +26,7 @@ class Counter extends Component {
           endTime={this.props.endTime}
           studyStart={this.props.studyStart}
           studyStop={this.props.studyStop}
+          studyReset={this.props.studyReset}
         />
         <TimeCheck />
       </div>
@@ -51,6 +52,9 @@ const mapDispatchToProps = dispatch => {
     },
     studyStop: () => {
       dispatch(actions.studyStop());
+    },
+    studyReset: () => {
+      dispatch(actions.studyReset());
     }
   };
 };

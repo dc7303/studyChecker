@@ -23,8 +23,7 @@ function clockInit() {
     seconds = `0${seconds}`;
   }
 
-  return `${year}-${month}-${day}
-  ${hours}:${minutes}:${seconds}`;
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 function clock() {

@@ -1,7 +1,6 @@
 .center-top {
   color: red;
 }
-
-.center-clock {
-  color: yellow;
+.center-control {
+  padding-top: 15px;
 }

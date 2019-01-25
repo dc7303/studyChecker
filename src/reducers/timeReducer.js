@@ -33,6 +33,13 @@ export default function timeReducer(state = initialState, action) {
         endTime: state.clockFormat
       };
 
+    case types.STUDY_RESET:
+      return {
+        ...state,
+        startTime: '',
+        endTime: ''
+      };
+
     default:
       return state;
   }
