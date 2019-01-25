@@ -3,25 +3,40 @@ import FileSync from 'lowdb/adapters/FileSync';
 const adapter = new FileSync('db_data/db.json');
 const db = low(adapter);
 
-db.defaults({ data: [] }).write();
+const setCollection = currentDay => {
+  db.set(currentDay, {
+    startTime: [],
+    endTime: [],
+    studiedTime: [],
+    restTime: [],
+    totalTime: []
+  }).write();
+};
 
-class DBHandler {
-  constructor() {
-    this.db = db;
-  }
+const insertStudyTime = (currentDay, startTime, endTime) => {
+  const startDate = new Date(startTime);
+  const endDate = new Date(endTime);
 
-  insertStudyTime(saveDate, startTime, endTime, restTime) {
-    db.get('data')
-      .push({
-        saveDate: saveDate,
-        studyTime: {
-          startTime: [startTime],
-          endTime: [endTime],
-          restTime: [restTime]
-        }
-      })
-      .write();
-  }
-}
+  //시작시간 저장
+  db.get(`${currentDay}.startTime`)
+    .push(startTime)
+    .write();
 
-export default db;
+  //종료시간 저장
+  db.get(`${currentDay}.endTime`)
+    .push(endTime)
+    .write();
+
+  //공부 한 시간
+  db.get(`${currentDay}.studiedTime`)
+    .push(endTime)
+    .write();
+};
+
+const DBHandler = {
+  db,
+  insertStudyTime,
+  setCollection
+};
+
+export default DBHandler;

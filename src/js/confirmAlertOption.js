@@ -1,10 +1,12 @@
+import DBHandler from '../lowDB/lowDB';
+
 /**
  * studyStart confirm-alert Option
  *
  * @param {string} msgName
  * @param {function} action
  */
-const startConfirm = (msgName, action) => {
+const startConfirm = (currentDay, msgName, action) => {
   const resultMsg = `${msgName}하시겠습니까?`;
 
   return {
@@ -14,7 +16,11 @@ const startConfirm = (msgName, action) => {
       {
         label: 'Yes',
         onClick: () => {
-          //if(_CURRENTDAY )
+          //DB 콜렉션 존재여부 체크
+          const checker = DBHandler.db.has(currentDay).value();
+          if (!checker) {
+            DBHandler.setCollection(currentDay);
+          }
           action();
         }
       },
@@ -55,6 +61,27 @@ const stopConfirm = (msgName, action) => {
   };
 };
 
+const saveStudiedTime = (currentDay, startTime, endTime) => {
+  return {
+    title: 'Confirm',
+    message: '저장하시겠습니까? 저장하신 후에는 수정 및 삭제가 불가능합니다.',
+    buttons: [
+      {
+        label: 'Yes',
+        onClick: () => {
+          DBHandler.insertStudyTime(currentDay, startTime, endTime);
+        }
+      },
+      {
+        label: 'No',
+        onClick: () => {
+          return;
+        }
+      }
+    ]
+  };
+};
+
 /**
  * study start & end reset
  *
@@ -79,4 +106,4 @@ const studyReset = action => {
   };
 };
 
-export { startConfirm, stopConfirm, studyReset };
+export { startConfirm, stopConfirm, saveStudiedTime, studyReset };

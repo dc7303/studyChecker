@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import db from '../../lowDB/lowDB';
+import DBHandler from '../../lowDB/lowDB';
 
 import * as confirmOption from '../../js/confirmAlertOption';
 
@@ -30,6 +30,9 @@ const propTypes = {
   endTime: PropTypes.string
 };
 
+/**
+ * Current YYYY-MM-DD
+ */
 let _CURRENTDAY = '';
 
 /**
@@ -64,30 +67,38 @@ class Time extends Component {
     }
   }
 
-  /*
-    Clock 
-   */
   componentWillMount() {
+    //clock 동작 loop
     this.timeHandler();
   }
 
   componentDidUpdate() {
+    //현재시간 지속적으로 체크.
     this.todayChecker();
   }
 
+  /**
+   * studyTime save
+   * _CURRENTDAY = DB ojbect name
+   */
   saveStudyTime() {
     const startTime = this.props.startTime;
     const endTime = this.props.endTime;
 
-    //시작시간 저장
-    db.get(`${_CURRENTDAY}.startTime`)
-      .push(startTime)
-      .write();
-
-    //종료시간 저장
-    db.get(`${_CURRENTDAY}.endTime`)
-      .push(endTime)
-      .write();
+    if (startTime === '' && startTime === null) {
+      alert('시작되지 않았습니다.');
+    } else if (endTime === '' && endTime === null) {
+      alert('종료되지 않았습니다.');
+    } else {
+      confirmAlert(
+        confirmOption.saveStudiedTime(
+          _CURRENTDAY,
+          startTime,
+          endTime,
+          this.props.studyReset
+        )
+      );
+    }
   }
 
   /**
@@ -104,7 +115,9 @@ class Time extends Component {
 
     //event select
     if (targetId === 'startBtn') {
-      confirmAlert(confirmOption.startConfirm(msgNameStart, studyStart));
+      confirmAlert(
+        confirmOption.startConfirm(_CURRENTDAY, msgNameStart, studyStart)
+      );
     } else if (targetId === 'stopBtn') {
       if (this.props.startTime !== '' && this.props.startTime !== null) {
         confirmAlert(confirmOption.stopConfirm(msgNameStop, studyStop));
@@ -129,7 +142,8 @@ class Time extends Component {
           <h3>I see your study</h3>
         </div>
         <div>
-          <h1>{this.props.clockFormat}</h1>
+          <h1>{this.props.clockFormat.slice(0, 10)}</h1>
+          <h2>{this.props.clockFormat.slice(10, 19)}</h2>
         </div>
         <div className="center-clock">
           Start : {this.props.startTime} <br />
@@ -142,6 +156,7 @@ class Time extends Component {
           <button id="stopBtn" onClick={this.confirmForAction}>
             Stop
           </button>
+          <button onClick={this.saveStudyTime}>Save</button>
           <button onClick={this.resetHandler}>Reset</button>
         </div>
       </div>
