@@ -4,8 +4,10 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import db from '../../lowDB/lowDB';
 
+import * as confirmOption from '../../js/confirmAlertOption';
+
 const defaultFuncProps = funcName => {
-  return () => console.log(`${funcName} undefined`);
+  return () => alert(`${funcName} undefined`);
 };
 
 const defaultProps = {
@@ -87,8 +89,11 @@ class Time extends Component {
       .push(endTime)
       .write();
   }
-  /*
-    react-confirm-alert()
+
+  /**
+   * button handler
+   *
+   * @param {event} event
    */
   confirmForAction(event) {
     const studyStart = this.props.studyStart;
@@ -97,87 +102,24 @@ class Time extends Component {
     const msgNameStop = '중지';
     const targetId = event.target.id;
 
-    /*
-      react-confirm-alert option
-    */
-    const startConfirmOption = (msgName, action) => {
-      const resultMsg = `${msgName}하시겠습니까?`;
-
-      return {
-        title: 'Confirm',
-        message: resultMsg,
-        buttons: [
-          {
-            label: 'Yes',
-            onClick: () => {
-              //if(_CURRENTDAY )
-              action();
-            }
-          },
-          {
-            label: 'No',
-            onClick: () => {
-              return;
-            }
-          }
-        ]
-      };
-    };
-
-    const stopConfirmOption = (msgName, action) => {
-      const resultMsg = `${msgName}하시겠습니까? 중지할 시 학습 시간이 기록이 반영되어 수정할 수 없습니다.`;
-
-      return {
-        title: 'Confirm',
-        message: resultMsg,
-        buttons: [
-          {
-            label: 'Yes',
-            onClick: () => {
-              action();
-              this.saveStudyTime();
-            }
-          },
-          {
-            label: 'No',
-            onClick: () => {
-              return;
-            }
-          }
-        ]
-      };
-    };
-
     //event select
     if (targetId === 'startBtn') {
-      confirmAlert(startConfirmOption(msgNameStart, studyStart));
+      confirmAlert(confirmOption.startConfirm(msgNameStart, studyStart));
     } else if (targetId === 'stopBtn') {
       if (this.props.startTime !== '' && this.props.startTime !== null) {
-        confirmAlert(stopConfirmOption(msgNameStop, studyStop));
+        confirmAlert(confirmOption.stopConfirm(msgNameStop, studyStop));
       } else {
         alert('start 후 사용가능합니다.');
       }
     }
   }
 
+  /**
+   * reset button handler
+   */
   resetHandler() {
     const studyReset = this.props.studyReset;
-    confirmAlert({
-      title: 'Confirm',
-      message: '초기화하시겠습니까? 초기화시 복구할 수 없습니다.',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: studyReset
-        },
-        {
-          label: 'No',
-          onClick: () => {
-            return;
-          }
-        }
-      ]
-    });
+    confirmAlert(confirmOption.studyReset(studyReset));
   }
 
   render() {

@@ -36,7 +36,8 @@ export default function timeReducer(state = initialState, action) {
     case types.STUDY_RESET:
       return {
         ...state,
-        startTime: ''
+        startTime: '',
+        endTime: ''
       };
 
     default:
