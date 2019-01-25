@@ -1,5 +1,8 @@
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
+
+import msToTime from '../js/msToTime';
+
 const adapter = new FileSync('db_data/db.json');
 const db = low(adapter);
 
@@ -14,8 +17,10 @@ const setCollection = currentDay => {
 };
 
 const insertStudyTime = (currentDay, startTime, endTime) => {
-  const startDate = new Date(startTime);
-  const endDate = new Date(endTime);
+  const startDate = new Date(startTime).getTime();
+  const endDate = new Date(endTime).getTime();
+
+  const studiedTime = msToTime(endDate - startDate);
 
   //시작시간 저장
   db.get(`${currentDay}.startTime`)
@@ -29,7 +34,7 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
 
   //공부 한 시간
   db.get(`${currentDay}.studiedTime`)
-    .push(endTime)
+    .push(studiedTime)
     .write();
 };
 
