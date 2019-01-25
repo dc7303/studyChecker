@@ -28,7 +28,7 @@ const propTypes = {
   endTime: PropTypes.string
 };
 
-let _BEFOREDAY = '';
+let _CURRENTDAY = '';
 
 /**
  * Component
@@ -39,6 +39,7 @@ class Time extends Component {
     this.timeHandler = this.timeHandler.bind(this);
     this.confirmForAction = this.confirmForAction.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
+    this.saveStudyTime = this.saveStudyTime.bind(this);
   }
 
   /**
@@ -54,9 +55,9 @@ class Time extends Component {
   todayChecker() {
     const currentDay = this.props.clockFormat.slice(0, 10);
 
-    if (_BEFOREDAY !== currentDay) {
-      _BEFOREDAY = currentDay;
-    } else if (_BEFOREDAY === currentDay) {
+    if (_CURRENTDAY !== currentDay) {
+      _CURRENTDAY = currentDay;
+    } else if (_CURRENTDAY === currentDay) {
       //전체 자동 세이브 진행.
     }
   }
@@ -71,6 +72,21 @@ class Time extends Component {
   componentDidUpdate() {
     this.todayChecker();
   }
+
+  saveStudyTime() {
+    const startTime = this.props.startTime;
+    const endTime = this.props.endTime;
+
+    //시작시간 저장
+    db.get(`${_CURRENTDAY}.startTime`)
+      .push(startTime)
+      .write();
+
+    //종료시간 저장
+    db.get(`${_CURRENTDAY}.endTime`)
+      .push(endTime)
+      .write();
+  }
   /*
     react-confirm-alert()
    */
@@ -80,8 +96,10 @@ class Time extends Component {
     const msgNameStart = '시작';
     const msgNameStop = '중지';
     const targetId = event.target.id;
-    const currentTime = this.props.clockFormat;
-    //react-confirm-alert option
+
+    /*
+      react-confirm-alert option
+    */
     const startConfirmOption = (msgName, action) => {
       const resultMsg = `${msgName}하시겠습니까?`;
 
@@ -91,12 +109,14 @@ class Time extends Component {
         buttons: [
           {
             label: 'Yes',
-            onClick: action
+            onClick: () => {
+              //if(_CURRENTDAY )
+              action();
+            }
           },
           {
             label: 'No',
             onClick: () => {
-              alert(_BEFOREDAY);
               return;
             }
           }
@@ -115,9 +135,7 @@ class Time extends Component {
             label: 'Yes',
             onClick: () => {
               action();
-              db.get('data')
-                .push({ test: 'test' })
-                .write();
+              this.saveStudyTime();
             }
           },
           {
