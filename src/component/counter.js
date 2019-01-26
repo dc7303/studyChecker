@@ -27,8 +27,13 @@ class Counter extends Component {
           studyStart={this.props.studyStart}
           studyStop={this.props.studyStop}
           studyReset={this.props.studyReset}
+          setCurrentDay={this.props.setCurrentDay}
+          currentDay={this.props.currentDay}
         />
-        <TimeCheck />
+        <TimeCheck
+          setCurrentDay={this.props.setCurrentDay}
+          currentDay={this.props.currentDay}
+        />
       </div>
     );
   }
@@ -38,7 +43,8 @@ const mapStateToProps = state => {
   return {
     clockFormat: state.timeReducer.clockFormat,
     startTime: state.timeReducer.startTime,
-    endTime: state.timeReducer.endTime
+    endTime: state.timeReducer.endTime,
+    currentDay: state.timeReducer.currentDay
   };
 };
 
@@ -55,6 +61,9 @@ const mapDispatchToProps = dispatch => {
     },
     studyReset: () => {
       dispatch(actions.studyReset());
+    },
+    setCurrentDay: () => {
+      dispatch(actions.setCurrentDay());
     }
   };
 };

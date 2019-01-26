@@ -61,7 +61,15 @@ const stopConfirm = (msgName, action) => {
   };
 };
 
-const saveStudiedTime = (currentDay, startTime, endTime) => {
+/**
+ * SaveStudiedTime.
+ * 
+ * @param {string} currentDay 
+ * @param {string} startTime 
+ * @param {string} endTime 
+ * @param {function} resetAction 
+ */
+const saveStudiedTime = (currentDay, startTime, endTime, resetAction) => {
   return {
     title: 'Confirm',
     message: '저장하시겠습니까? 저장하신 후에는 수정 및 삭제가 불가능합니다.',
@@ -70,6 +78,7 @@ const saveStudiedTime = (currentDay, startTime, endTime) => {
         label: 'Yes',
         onClick: () => {
           DBHandler.insertStudyTime(currentDay, startTime, endTime);
+          resetAction();
         }
       },
       {

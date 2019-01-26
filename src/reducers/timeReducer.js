@@ -4,7 +4,8 @@ import clock from '../js/clock';
 const initialState = {
   clockFormat: '',
   startTime: '',
-  endTime: ''
+  endTime: '',
+  currentDay: ''
 };
 
 /**
@@ -38,6 +39,12 @@ export default function timeReducer(state = initialState, action) {
         ...state,
         startTime: '',
         endTime: ''
+      };
+
+    case types.SET_CURRENT_DAY:
+      return {
+        ...state,
+        currentDay: state.clockFormat.slice(0, 10)
       };
 
     default:

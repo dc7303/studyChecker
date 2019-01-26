@@ -17,7 +17,8 @@ const defaultProps = {
   studyStop: defaultFuncProps('studyStop'),
   studyReset: defaultFuncProps('studyReset'),
   startTime: '',
-  endTime: ''
+  endTime: '',
+  currentDay: ''
 };
 
 const propTypes = {
@@ -27,7 +28,8 @@ const propTypes = {
   studyStop: PropTypes.func,
   studyReset: PropTypes.func,
   startTime: PropTypes.string,
-  endTime: PropTypes.string
+  endTime: PropTypes.string,
+  setCurrentDay: PropTypes.func
 };
 
 /**
@@ -58,7 +60,8 @@ class Time extends Component {
    * 날짜가 변경하는걸 감지하는 함수
    */
   todayChecker() {
-    const currentDay = this.props.clockFormat.slice(0, 10);
+    this.props.setCurrentDay();
+    const currentDay = this.props.currentDay;
 
     if (_CURRENTDAY !== currentDay) {
       _CURRENTDAY = currentDay;

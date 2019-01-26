@@ -1,37 +1,69 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import DBHandler from '../../lowDB/lowDB';
 
-const defaultProps = {};
-const propTypes = {};
+const defaultProps = {
+  currentDay: ''
+};
+const propTypes = {
+  currentDay: PropTypes.string
+};
 
 class TimeCheck extends Component {
   constructor(props) {
     super(props);
+    this.studied = [];
+    this.rest = [];
   }
+
+  setData(currentDay) {
+    let data = [];
+    const studied = [];
+    const rest = [];
+
+    if (currentDay !== '' && currentDay !== null) {
+      data = DBHandler.getStudiedAndRest(currentDay);
+
+      data.studiedData.forEach(elem => {
+        studied.push(elem);
+      });
+
+      data.restData.forEach(elem => {
+        rest.push(elem);
+      });
+    }
+
+    this.studied = studied;
+    this.rest = rest;
+  }
+
+  componentDidUpdate() {
+    this.setData(this.props.currentDay);
+  }
+
   render() {
     return (
       <div className="right">
+        <div>{this.props.currentDay}</div>
         <div className="right-top">
           <h3>Time Checker</h3>
         </div>
         <div className="right-left">
-          <span className="title">Study</span>
-          <h5>01:22:13 학습</h5>
-          <h5>01:00:00 학습</h5>
-          <h5>00:56:13 학습</h5>
-          <h5>01:50:33 학습</h5>
-          <h5>02:30:10 학습</h5>
-          <h5>04:21:13 학습</h5>
+          <span className="title">Studied</span>
+          {this.studied.map(elem => {
+            return <div className="studied-time">{elem}</div>;
+          })}
         </div>
         <div className="right-right">
           <span className="title">Rest</span>
-          <h5>00:20:31</h5>
-          <h5>00:20:31</h5>
-          <h5>00:20:31</h5>
-          <h5>00:20:31</h5>
-          <h5>00:20:31</h5>
+          <div>
+            {this.rest.map(elem => {
+              return <div className="rest-time">{elem}</div>;
+            })}
+          </div>
         </div>
         <div className="right-bottom">
-          <span className="total">Total : 12:00:00 학습</span>
+          <span className="total">Total Studied : </span>
         </div>
       </div>
     );

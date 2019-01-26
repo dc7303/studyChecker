@@ -23,3 +23,9 @@ export function studyReset() {
     type: types.STUDY_RESET
   };
 }
+
+export function setCurrentDay() {
+  return {
+    type: types.SET_CURRENT_DAY
+  };
+}
