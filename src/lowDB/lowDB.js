@@ -32,10 +32,10 @@ const setCollection = currentDay => {
  * @param {string} endTime
  */
 const insertStudyTime = (currentDay, startTime, endTime) => {
-  const startDate = new Date(startTime).getTime();
-  const endDate = new Date(endTime).getTime();
+  const studiedTime = timeModule.getElapsedTime(endTime, startTime);
 
-  const studiedTime = timeModule.msToTime(endDate - startDate);
+  //이전에 저장한 값이 있는 경우 이전 endTime과 계산해서 쉬는시간 출력
+  setRestTime(currentDay, startTime);
 
   //시작시간 저장
   db.get(`${currentDay}.startTime`)
@@ -52,8 +52,32 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
     .push(studiedTime)
     .write();
 
-  //총 공부한 시간
-  setTotalTime(currentDay);
+  //총 공부한 시간 저장
+  setTotalTime(currentDay, db.get(`${currentDay}.studiedTime`).value());
+};
+
+/**
+ * 이전에 시작시간 있는 경우 쉬는 시간 계산해서 저장해주는 로직
+ *
+ * @param {string} currentDay
+ * @param {string} startTime
+ */
+const setRestTime = (currentDay, startTime) => {
+  const endSize = db
+    .get(`${currentDay}.endTime`)
+    .size()
+    .value();
+
+  if (endSize > 0) {
+    const endTime = db.get(`${currentDay}.endTime[${endSize - 1}]`).value();
+
+    const restTime = timeModule.getElapsedTime(startTime, endTime);
+    db.get(`${currentDay}.restTime`)
+      .push(restTime)
+      .write();
+  } else {
+    return;
+  }
 };
 
 /**
@@ -61,9 +85,7 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
  *
  * @param {string} currentDay
  */
-const setTotalTime = currentDay => {
-  const studied = db.get(`${currentDay}.studiedTime`).value();
-
+const setTotalTime = (currentDay, studied) => {
   //총 공부한 시간 element remove
   db.get(`${currentDay}.totalTime`)
     .remove()
@@ -75,6 +97,12 @@ const setTotalTime = currentDay => {
     .write();
 };
 
+/**
+ * studied, rest, total 가져오는 메소드
+ *
+ * @param {string} currentDay
+ * @returns {Object}
+ */
 const getStudiedAndRest = currentDay => {
   const currentObj = db.get(currentDay).value();
 

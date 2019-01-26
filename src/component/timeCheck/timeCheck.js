@@ -46,18 +46,18 @@ class TimeCheck extends Component {
   render() {
     return (
       <div className="right">
-        <div>{this.props.currentDay}</div>
         <div className="right-top">
           <h3>Time Checker</h3>
         </div>
+        <div>{this.props.currentDay}</div>
         <div className="right-left">
-          <span className="title">Studied</span>
+          <div className="title">Studied</div>
           {this.studied.map(elem => {
             return <div className="studied-time">{elem}</div>;
           })}
         </div>
         <div className="right-right">
-          <span className="title">Rest</span>
+          <div className="title">Rest</div>
           <div>
             {this.rest.map(elem => {
               return <div className="rest-time">{elem}</div>;
@@ -65,7 +65,7 @@ class TimeCheck extends Component {
           </div>
         </div>
         <div className="right-bottom">
-          <span className="total">Total Studied : {this.totalStudied}</span>
+          <div className="total">Total Studied : {this.totalStudied}</div>
         </div>
       </div>
     );

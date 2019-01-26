@@ -149,8 +149,8 @@ class Time extends Component {
           <h2>{this.props.clockFormat.slice(10, 19)}</h2>
         </div>
         <div className="center-clock">
-          Start : {this.props.startTime} <br />
-          End : {this.props.endTime}
+          <span>Start : </span> {this.props.startTime} <br />
+          <span>End : </span> {this.props.endTime}
         </div>
         <div className="center-control">
           <button id="startBtn" onClick={this.confirmForAction}>

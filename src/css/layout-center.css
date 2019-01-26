@@ -3,4 +3,9 @@
 }
 .center-control {
   padding-top: 15px;
+  padding-bottom: 30px;
+}
+
+.center-clock span {
+  color: orange;
 }

@@ -33,10 +33,10 @@ export const sumTimes = arr => {
     second += parseInt(splitElem[2]);
   });
 
-  hour = hour + minute / 60;
-  minute = minute % 60;
+  hour = Math.floor(hour + minute / 60);
+  minute = Math.floor(minute % 60);
   minute = Math.floor(minute + second / 60);
-  second = second % 60;
+  second = Math.floor(second % 60);
 
   hour = formatTime(hour);
   minute = formatTime(minute);
@@ -58,10 +58,26 @@ export const formatTime = data => {
   }
 };
 
+/**
+ * 경과시간 계산하여 return 해주는 함수
+ *
+ * @param {string} gtTime
+ * @param {string} ltTime
+ *
+ * @return {String}
+ */
+export const getElapsedTime = (gtTime, ltTime) => {
+  const gtTimeMs = new Date(gtTime).getTime();
+  const ltTimeMs = new Date(ltTime).getTime();
+
+  return msToTime(gtTimeMs - ltTimeMs);
+};
+
 const timeModule = {
   msToTime,
   sumTimes,
-  formatTime
+  formatTime,
+  getElapsedTime
 };
 
 export default timeModule;
