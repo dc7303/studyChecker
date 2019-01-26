@@ -1,7 +1,7 @@
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 
-import msToTime from '../js/msToTime';
+import timeModule from '../js/timeModule';
 
 const adapter = new FileSync('db_data/db.json');
 const db = low(adapter);
@@ -25,7 +25,7 @@ const setCollection = currentDay => {
 
 /**
  * 학습시간 DB Insert
- * msToTime module 사용하여 start시간과 end시간 범위를 구해준다.
+ * timeModule.msToTime module 사용하여 start시간과 end시간 범위를 구해준다.
  *
  * @param {string} currentDay
  * @param {string} startTime
@@ -35,7 +35,7 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
   const startDate = new Date(startTime).getTime();
   const endDate = new Date(endTime).getTime();
 
-  const studiedTime = msToTime(endDate - startDate);
+  const studiedTime = timeModule.msToTime(endDate - startDate);
 
   //시작시간 저장
   db.get(`${currentDay}.startTime`)
@@ -47,9 +47,31 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
     .push(endTime)
     .write();
 
-  //공부 한 시간
+  //공부한 시간
   db.get(`${currentDay}.studiedTime`)
     .push(studiedTime)
+    .write();
+
+  //총 공부한 시간
+  setTotalTime(currentDay);
+};
+
+/**
+ * 총 공부한 시간 셋팅
+ *
+ * @param {string} currentDay
+ */
+const setTotalTime = currentDay => {
+  const studied = db.get(`${currentDay}.studiedTime`).value();
+
+  //총 공부한 시간 element remove
+  db.get(`${currentDay}.totalTime`)
+    .remove()
+    .write();
+
+  //총 공부한 시간
+  db.get(`${currentDay}.totalTime`)
+    .push(timeModule.sumTimes(studied))
     .write();
 };
 
@@ -58,10 +80,12 @@ const getStudiedAndRest = currentDay => {
 
   const studiedData = currentObj.studiedTime;
   const restData = currentObj.restTime;
+  const totalData = currentObj.totalTime;
 
   return {
     studiedData,
-    restData
+    restData,
+    totalData
   };
 };
 

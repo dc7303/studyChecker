@@ -1,3 +1,6 @@
+import { formatTime } from './timeModule';
+import { format } from 'path';
+
 function clockInit() {
   const date = new Date();
   let year = date.getFullYear();
@@ -7,21 +10,11 @@ function clockInit() {
   let minutes = date.getMinutes();
   let seconds = date.getSeconds();
 
-  if (month < 10) {
-    month = `0${month}`;
-  }
-
-  if (day < 10) {
-    day = `0${day}`;
-  }
-
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-
-  if (seconds < 10) {
-    seconds = `0${seconds}`;
-  }
+  month = formatTime(month);
+  day = formatTime(day);
+  hours = formatTime(hours);
+  minutes = formatTime(minutes);
+  seconds = formatTime(seconds);
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

@@ -14,6 +14,7 @@ class TimeCheck extends Component {
     super(props);
     this.studied = [];
     this.rest = [];
+    this.totalStudied = '';
   }
 
   setData(currentDay) {
@@ -35,6 +36,7 @@ class TimeCheck extends Component {
 
     this.studied = studied;
     this.rest = rest;
+    this.totalStudied = data.totalData;
   }
 
   componentDidUpdate() {
@@ -63,7 +65,7 @@ class TimeCheck extends Component {
           </div>
         </div>
         <div className="right-bottom">
-          <span className="total">Total Studied : </span>
+          <span className="total">Total Studied : {this.totalStudied}</span>
         </div>
       </div>
     );
