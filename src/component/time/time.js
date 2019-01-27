@@ -4,11 +4,8 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import DBHandler from '../../lowDB/lowDB';
 
-import * as confirmOption from '../../js/confirmAlertOption';
-
-const defaultFuncProps = funcName => {
-  return () => alert(`${funcName} undefined`);
-};
+import { defaultFuncProps } from '../../js/error';
+import * as confirmOption from '../../js/options/confirmAlertOption';
 
 const defaultProps = {
   clockFormat: '',

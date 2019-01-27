@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DBHandler from '../../lowDB/lowDB';
+import { defaultFuncProps } from '../../js/error';
 
 const defaultProps = {
-  currentDay: ''
+  currentDay: '',
+  setCurrentDay: defaultFuncProps('setCurrentDay')
 };
 const propTypes = {
-  currentDay: PropTypes.string
+  currentDay: PropTypes.string,
+  setCurrentDay: PropTypes.func
 };
 
 class TimeCheck extends Component {

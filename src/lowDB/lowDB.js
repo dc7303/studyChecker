@@ -116,11 +116,30 @@ const getStudiedAndRest = currentDay => {
   };
 };
 
+/**
+ * get calendar chart data
+ *
+ * @param {Array} option
+ */
+const getCalendarChartData = option => {
+  const allObj = db.value();
+  const resultArr = [option];
+
+  for (let prop in allObj) {
+    const replaceStr = allObj[prop].totalTime.replace(/:/g, '');
+    const value = parseInt(replaceStr);
+    resultArr.push([new Date(prop), value]);
+  }
+
+  return resultArr;
+};
+
 const DBHandler = {
   db,
   insertStudyTime,
   setCollection,
-  getStudiedAndRest
+  getStudiedAndRest,
+  getCalendarChartData
 };
 
 export default DBHandler;

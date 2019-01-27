@@ -18,7 +18,10 @@ class Counter extends Component {
   render() {
     return (
       <div>
-        <Graph />
+        <Graph
+          setCurrentDay={this.props.setCurrentDay}
+          currentDay={this.props.currentDay}
+        />
         <Time
           clockFormat={this.props.clockFormat}
           clockHandler={this.props.clockHandler}

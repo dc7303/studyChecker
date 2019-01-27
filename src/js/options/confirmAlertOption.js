@@ -1,4 +1,4 @@
-import DBHandler from '../lowDB/lowDB';
+import DBHandler from '../../lowDB/lowDB';
 
 /**
  * studyStart confirm-alert Option
@@ -63,11 +63,11 @@ const stopConfirm = (msgName, action) => {
 
 /**
  * SaveStudiedTime.
- * 
- * @param {string} currentDay 
- * @param {string} startTime 
- * @param {string} endTime 
- * @param {function} resetAction 
+ *
+ * @param {string} currentDay
+ * @param {string} startTime
+ * @param {string} endTime
+ * @param {function} resetAction
  */
 const saveStudiedTime = (currentDay, startTime, endTime, resetAction) => {
   return {
