@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import DBHandler from '../../lowDB/lowDB';
 
+import { insertStudyTime } from '../../lowDB/lowDB';
 import { defaultFuncProps } from '../../js/error';
 import * as confirmOption from '../../js/options/confirmAlertOption';
 
@@ -44,6 +44,7 @@ class Time extends Component {
     this.confirmForAction = this.confirmForAction.bind(this);
     this.resetHandler = this.resetHandler.bind(this);
     this.saveStudyTime = this.saveStudyTime.bind(this);
+    this.saveForNextDay = this.saveForNextDay.bind(this);
   }
 
   /**
@@ -53,17 +54,28 @@ class Time extends Component {
     setInterval(this.props.clockHandler, 1000);
   }
 
+  saveForNextDay(currentDay) {
+    this.props.studyStop();
+
+    insertStudyTime(currentDay, this.props.startTime, this.props.startTime);
+    this.props.studyReset();
+    this.props.studyStart();
+  }
+
   /**
    * 날짜가 변경하는걸 감지하는 함수
    */
   todayChecker() {
     this.props.setCurrentDay();
+
     const currentDay = this.props.currentDay;
 
     if (_CURRENTDAY !== currentDay) {
+      if (_CURRENTDAY !== '' && _CURRENTDAY !== null) {
+        this.saveForNextDay(currentDay);
+      }
+
       _CURRENTDAY = currentDay;
-    } else if (_CURRENTDAY === currentDay) {
-      //전체 자동 세이브 진행.
     }
   }
 

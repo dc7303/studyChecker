@@ -26,7 +26,10 @@ class Graph extends Component {
       { type: 'number', id: 'Won/Loss' }
     ];
 
-    this.calChartData = DBHandler.getCalendarChartData(dataOption);
+    this.calChartData = DBHandler.getCalendarChartData(
+      this.props.currentDay,
+      dataOption
+    );
   }
 
   render() {

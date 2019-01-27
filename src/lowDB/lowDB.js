@@ -4,7 +4,7 @@ import FileSync from 'lowdb/adapters/FileSync';
 import timeModule from '../js/timeModule';
 
 const adapter = new FileSync('db_data/db.json');
-const db = low(adapter);
+export const db = low(adapter);
 
 /**
  * study start 이벤트 발생 때
@@ -13,7 +13,7 @@ const db = low(adapter);
  *
  * @param {string} currentDay
  */
-const setCollection = currentDay => {
+export const setCollection = currentDay => {
   db.set(currentDay, {
     startTime: [],
     endTime: [],
@@ -31,7 +31,7 @@ const setCollection = currentDay => {
  * @param {string} startTime
  * @param {string} endTime
  */
-const insertStudyTime = (currentDay, startTime, endTime) => {
+export const insertStudyTime = (currentDay, startTime, endTime) => {
   const studiedTime = timeModule.getElapsedTime(endTime, startTime);
 
   //이전에 저장한 값이 있는 경우 이전 endTime과 계산해서 쉬는시간 출력
@@ -62,7 +62,7 @@ const insertStudyTime = (currentDay, startTime, endTime) => {
  * @param {string} currentDay
  * @param {string} startTime
  */
-const setRestTime = (currentDay, startTime) => {
+export const setRestTime = (currentDay, startTime) => {
   const endSize = db
     .get(`${currentDay}.endTime`)
     .size()
@@ -85,7 +85,7 @@ const setRestTime = (currentDay, startTime) => {
  *
  * @param {string} currentDay
  */
-const setTotalTime = (currentDay, studied) => {
+export const setTotalTime = (currentDay, studied) => {
   //총 공부한 시간 element remove
   db.update(`${currentDay}.totalTime`, n =>
     timeModule.sumTimes(studied)
@@ -98,7 +98,7 @@ const setTotalTime = (currentDay, studied) => {
  * @param {string} currentDay
  * @returns {Object}
  */
-const getStudiedAndRest = currentDay => {
+export const getStudiedAndRest = currentDay => {
   const currentObj = db.get(currentDay).value();
 
   if (currentObj === undefined) {
@@ -121,14 +121,19 @@ const getStudiedAndRest = currentDay => {
  *
  * @param {Array} option
  */
-const getCalendarChartData = option => {
+export const getCalendarChartData = (currentDay, option) => {
   const allObj = db.value();
   const resultArr = [option];
 
   for (let prop in allObj) {
-    const replaceStr = allObj[prop].totalTime.replace(/:/g, '');
-    const value = parseInt(replaceStr);
-    resultArr.push([new Date(prop), value]);
+    const searchYear = String(prop).slice(0, 4);
+    const currentYear = String(currentDay).slice(0, 4);
+
+    if (searchYear === currentYear) {
+      const replaceStr = allObj[prop].totalTime.replace(/:/g, '');
+      const value = parseInt(replaceStr);
+      resultArr.push([new Date(prop), value]);
+    }
   }
 
   return resultArr;

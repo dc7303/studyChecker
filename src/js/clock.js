@@ -1,5 +1,4 @@
 import { formatTime } from './timeModule';
-import { format } from 'path';
 
 function clockInit() {
   const date = new Date();
