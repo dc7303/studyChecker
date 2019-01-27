@@ -19,7 +19,7 @@ const setCollection = currentDay => {
     endTime: [],
     studiedTime: [],
     restTime: [],
-    totalTime: []
+    totalTime: ''
   }).write();
 };
 
@@ -87,14 +87,9 @@ const setRestTime = (currentDay, startTime) => {
  */
 const setTotalTime = (currentDay, studied) => {
   //총 공부한 시간 element remove
-  db.get(`${currentDay}.totalTime`)
-    .remove()
-    .write();
-
-  //총 공부한 시간
-  db.get(`${currentDay}.totalTime`)
-    .push(timeModule.sumTimes(studied))
-    .write();
+  db.update(`${currentDay}.totalTime`, n =>
+    timeModule.sumTimes(studied)
+  ).write();
 };
 
 /**
@@ -105,6 +100,10 @@ const setTotalTime = (currentDay, studied) => {
  */
 const getStudiedAndRest = currentDay => {
   const currentObj = db.get(currentDay).value();
+
+  if (currentObj === undefined) {
+    return undefined;
+  }
 
   const studiedData = currentObj.studiedTime;
   const restData = currentObj.restTime;

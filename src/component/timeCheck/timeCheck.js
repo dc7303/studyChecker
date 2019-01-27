@@ -25,6 +25,10 @@ class TimeCheck extends Component {
     if (currentDay !== '' && currentDay !== null) {
       data = DBHandler.getStudiedAndRest(currentDay);
 
+      if (data === undefined) {
+        return;
+      }
+
       data.studiedData.forEach(elem => {
         studied.push(elem);
       });
