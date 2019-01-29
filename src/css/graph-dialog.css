@@ -4,4 +4,22 @@
 }
 
 .header-dialog-studied {
+  float: left;
+}
+
+.header-dialog-rest {
+  float: right;
+}
+
+.header-dialog-total {
+  clear: left;
+}
+
+.header-dialog-studied .title,
+.header-dialog-rest .title {
+  color: orange;
+}
+
+.header-dialog-total {
+  color: chartreuse;
 }

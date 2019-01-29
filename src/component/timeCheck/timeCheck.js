@@ -45,7 +45,6 @@ class TimeCheck extends Component {
         <div className="right-top">
           <h3>Time Checker</h3>
         </div>
-        <div>{this.props.currentDay}</div>
         <div className="right-left">
           <div className="title">Studied</div>
           {this.studied.map(elem => {

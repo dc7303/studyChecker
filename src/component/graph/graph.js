@@ -102,26 +102,31 @@ class Graph extends Component {
                   onClick: () => this.closeDialog()
                 }
               ]}
+              height={450}
               position={{
-                x: 200,
+                x: 210,
                 y: 0
               }}
             >
               <div>
                 <div className="header-dialog-studied">
-                  <div>
-                    <h3>Studied</h3>
-                  </div>
-                  <h1>{this.state.studiedData}</h1>
+                  <h4 className="title">Studied</h4>
+                  <h4>
+                    {this.state.studiedData.map(elem => {
+                      return <div>{elem}</div>;
+                    })}
+                  </h4>
                 </div>
                 <div className="header-dialog-rest">
-                  <div>
-                    <h3>Rest</h3>
-                  </div>
-                  <h1>{this.state.restData}</h1>
+                  <h4 className="title">Rest</h4>
+                  <h4>
+                    {this.state.restData.map(elem => {
+                      return <div>{elem}</div>;
+                    })}
+                  </h4>
                 </div>
                 <div className="header-dialog-total">
-                  <h1>total : {this.state.totalData}</h1>
+                  <h3>total : {this.state.totalData}</h3>
                 </div>
               </div>
             </Dialog>

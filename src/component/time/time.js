@@ -172,6 +172,21 @@ class Time extends Component {
           <button onClick={this.saveStudyTime}>Save</button>
           <button onClick={this.resetHandler}>Reset</button>
         </div>
+        <div className="center-dev-info">
+          <div>
+            start -> stop -> save 순으로 사용하세요.
+            <br />
+            위의 chart에 기록되며, 기록된 값 클릭시 상세보기 할 수 있습니다.
+          </div>
+          <br />
+          <div>@Developer: Mark42</div>
+          <div>
+            @Github:
+            <a href="#none" onClick={}>
+              https://github.com/dc7303/studyChecker
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

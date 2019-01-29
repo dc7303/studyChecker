@@ -19,6 +19,7 @@
 .right-right .title,
 .right-left .title {
   color: orange;
+  font-size: 19px;
   margin-bottom: 10px;
 }
 
@@ -26,4 +27,16 @@
   color: chartreuse;
   padding-top: 30px;
   padding-bottom: 20px;
+}
+
+.right-left .studied-time,
+.right-right .rest-time {
+  font-size: 15px;
+}
+
+.right-bottom .total {
+  color: chartreuse;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  font-size: 25px;
 }
