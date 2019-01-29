@@ -102,7 +102,7 @@ class Graph extends Component {
                   onClick: () => this.closeDialog()
                 }
               ]}
-              height={450}
+              height={430}
               position={{
                 x: 210,
                 y: 0

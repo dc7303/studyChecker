@@ -57,7 +57,7 @@ class Time extends Component {
   saveForNextDay(currentDay) {
     this.props.studyStop();
 
-    insertStudyTime(currentDay, this.props.startTime, this.props.startTime);
+    insertStudyTime(currentDay, this.props.startTime, this.props.endTime);
     this.props.studyReset();
     this.props.studyStart();
   }
@@ -73,7 +73,7 @@ class Time extends Component {
     if (_CURRENTDAY !== currentDay) {
       if (_CURRENTDAY !== '' && _CURRENTDAY !== null) {
         //작동 불능. mark에서 수정필요.
-        //this.saveForNextDay(currentDay);
+        this.saveForNextDay(currentDay);
       }
 
       _CURRENTDAY = currentDay;
@@ -140,6 +140,12 @@ class Time extends Component {
     }
   }
 
+  openGithub() {
+    require('electron').shell.openExternal(
+      'https://github.com/dc7303/studyChecker'
+    );
+  }
+
   /**
    * reset button handler
    */
@@ -182,7 +188,7 @@ class Time extends Component {
           <div>@Developer: Mark42</div>
           <div>
             @Github:
-            <a href="#none" onClick={}>
+            <a href="#none" onClick={this.openGithub}>
               https://github.com/dc7303/studyChecker
             </a>
           </div>
