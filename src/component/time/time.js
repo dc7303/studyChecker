@@ -26,6 +26,7 @@ const propTypes = {
   studyReset: PropTypes.func,
   startTime: PropTypes.string,
   endTime: PropTypes.string,
+  currentDay: PropTypes.string,
   setCurrentDay: PropTypes.func
 };
 
@@ -54,10 +55,12 @@ class Time extends Component {
     setInterval(this.props.clockHandler, 1000);
   }
 
+  /**
+   * 하루가 바뀔때 23:59:59 endTime 셋팅 및 저장
+   * 명일 날짜로 자동 startTime 셋팅.
+   */
   saveForNextDay(currentDay) {
-    this.props.studyStop();
-
-    insertStudyTime(currentDay, this.props.startTime, this.props.endTime);
+    insertStudyTime(currentDay, this.props.startTime, `${currentDay} 23:59:59`);
     this.props.studyReset();
     this.props.studyStart();
   }
@@ -69,7 +72,6 @@ class Time extends Component {
     this.props.setCurrentDay();
 
     const currentDay = this.props.currentDay;
-
     if (_CURRENTDAY !== currentDay) {
       if (_CURRENTDAY !== '' && _CURRENTDAY !== null) {
         //작동 불능. mark에서 수정필요.
@@ -140,6 +142,9 @@ class Time extends Component {
     }
   }
 
+  /**
+   * github 주소 클릭 시 external browser open
+   */
   openGithub() {
     require('electron').shell.openExternal(
       'https://github.com/dc7303/studyChecker'
@@ -185,7 +190,7 @@ class Time extends Component {
             위의 chart에 기록되며, 기록된 값 클릭시 상세보기 할 수 있습니다.
           </div>
           <br />
-          <div>@Developer: Mark42</div>
+          <div>@Developer:Mark42</div>
           <div>
             @Github:
             <a href="#none" onClick={this.openGithub}>
