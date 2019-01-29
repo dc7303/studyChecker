@@ -1,7 +1,7 @@
 /**
  * calendar Chart option
  */
-export const calChartOoptions = {
+export const calChartOptions = {
   calendar: {
     height: 200,
     width: 1200,

@@ -59,6 +59,22 @@ export const formatTime = data => {
 };
 
 /**
+ * MS값을 YYYY-MM-DD 값으로 포맷하여 return
+ */
+export const msToFormatDate = msDate => {
+  const date = new Date(msDate);
+
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+
+  month = formatTime(month);
+  day = formatTime(day);
+
+  return `${year}-${month}-${day}`;
+};
+
+/**
  * 경과시간 계산하여 return 해주는 함수
  *
  * @param {string} gtTime
@@ -77,6 +93,7 @@ const timeModule = {
   msToTime,
   sumTimes,
   formatTime,
+  msToFormatDate,
   getElapsedTime
 };
 

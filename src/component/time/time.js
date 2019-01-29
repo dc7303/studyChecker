@@ -72,7 +72,8 @@ class Time extends Component {
 
     if (_CURRENTDAY !== currentDay) {
       if (_CURRENTDAY !== '' && _CURRENTDAY !== null) {
-        this.saveForNextDay(currentDay);
+        //작동 불능. mark에서 수정필요.
+        //this.saveForNextDay(currentDay);
       }
 
       _CURRENTDAY = currentDay;

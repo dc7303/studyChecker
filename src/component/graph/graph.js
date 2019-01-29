@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import DBHandler from '../../lowDB/lowDB';
 import { defaultFuncProps } from '../../js/error';
-import { calChartOoptions } from '../../js/options/chartOption';
+import { calChartOptions } from '../../js/options/chartOption';
+import { msToFormatDate } from '../../js/timeModule';
 
 const defaultProps = {
   currentDay: '',
@@ -14,6 +15,19 @@ const propTypes = {
   currentDay: PropTypes.string,
   setCurrentDay: PropTypes.func
 };
+
+const chartEvents = [
+  {
+    eventName: 'select',
+    callback({ chartWrapper }) {
+      const date = msToFormatDate(
+        chartWrapper.getChart().getSelection()[0].date
+      );
+      const selectData = DBHandler.getStudiedAndRest(date);
+      alert(selectData);
+    }
+  }
+];
 
 class Graph extends Component {
   constructor(props) {
@@ -39,9 +53,10 @@ class Graph extends Component {
           <Chart
             chartType="Calendar"
             loader={<div>Loading Chart</div>}
+            options={calChartOptions}
             data={this.calChartData}
-            options={calChartOoptions}
             rootProps={{ 'data-testid': '1' }}
+            chartEvents={chartEvents}
           />
         </div>
       </div>

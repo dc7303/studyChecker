@@ -18,32 +18,21 @@ class TimeCheck extends Component {
     this.studied = [];
     this.rest = [];
     this.totalStudied = '';
+    this.setData.bind(this);
   }
 
   setData(currentDay) {
-    let data = [];
-    const studied = [];
-    const rest = [];
-
     if (currentDay !== '' && currentDay !== null) {
-      data = DBHandler.getStudiedAndRest(currentDay);
+      const data = DBHandler.getStudiedAndRest(currentDay);
 
       if (data === undefined) {
         return;
+      } else {
+        this.studied = data.studiedData;
+        this.rest = data.restData;
+        this.totalStudied = data.totalData;
       }
-
-      data.studiedData.forEach(elem => {
-        studied.push(elem);
-      });
-
-      data.restData.forEach(elem => {
-        rest.push(elem);
-      });
     }
-
-    this.studied = studied;
-    this.rest = rest;
-    this.totalStudied = data.totalData;
   }
 
   componentDidUpdate() {
