@@ -8,6 +8,7 @@ import reducers from './reducers';
 import './css/index.css';
 import './css/layout-right.css';
 import './css/layout-center.css';
+import './css/graph-dialog.css';
 import * as serviceWorker from './serviceWorker';
 
 const store = createStore(reducers);
