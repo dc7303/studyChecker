@@ -17,7 +17,7 @@ const startConfirm = (currentDay, msgName, action) => {
         label: 'Yes',
         onClick: () => {
           //DB 콜렉션 존재여부 체크
-          const checker = DBHandler.db.has(currentDay).value();
+          const checker = DBHandler.collectionCheck(currentDay);
           if (!checker) {
             DBHandler.setCollection(currentDay);
           }

@@ -1,10 +1,17 @@
 import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
-
 import timeModule from '../js/timeModule';
 
-const adapter = new FileSync('db_data/db.json');
-export const db = low(adapter);
+let adapter;
+if (typeof localStorage === 'undefined' || localStorage === null) {
+  const FileSync = require('lowdb/adapters/FileSync');
+  alert('fileSync');
+  adapter = new FileSync(`db_data/db.json`);
+} else {
+  const LocalStorage = require('lowdb/adapters/LocalStorage');
+  adapter = new LocalStorage('db');
+}
+
+let db = low(adapter);
 
 /**
  * study start 이벤트 발생 때
@@ -139,12 +146,16 @@ export const getCalendarChartData = (currentDay, option) => {
   return resultArr;
 };
 
+export const collectionCheck = currentDay => {
+  return db.has(currentDay).value();
+};
+
 const DBHandler = {
-  db,
   insertStudyTime,
   setCollection,
   getStudiedAndRest,
-  getCalendarChartData
+  getCalendarChartData,
+  collectionCheck
 };
 
 export default DBHandler;
