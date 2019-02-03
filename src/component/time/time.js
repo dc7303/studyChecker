@@ -100,9 +100,11 @@ class Time extends Component {
     const startTime = this.props.startTime;
     const endTime = this.props.endTime;
 
-    if (startTime === '' && startTime === null) {
+    console.log(endTime);
+
+    if (startTime === '' || startTime === null) {
       alert('시작되지 않았습니다.');
-    } else if (endTime === '' && endTime === null) {
+    } else if (endTime === '' || endTime === null) {
       alert('종료되지 않았습니다.');
     } else {
       confirmAlert(
@@ -191,6 +193,7 @@ class Time extends Component {
           </div>
           <br />
           <div>@Developer:Mark42</div>
+          <div>@Version:1.0v</div>
           <div>
             @Github:
             <a href="#none" onClick={this.openGithub}>

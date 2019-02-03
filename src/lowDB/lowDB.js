@@ -2,9 +2,9 @@ import low from 'lowdb';
 import timeModule from '../js/timeModule';
 
 let adapter;
+
 if (typeof localStorage === 'undefined' || localStorage === null) {
   const FileSync = require('lowdb/adapters/FileSync');
-  alert('fileSync');
   adapter = new FileSync(`db_data/db.json`);
 } else {
   const LocalStorage = require('lowdb/adapters/LocalStorage');

@@ -11,7 +11,7 @@ let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 947,
-    height: 677
+    height: 681
   });
 
   mainWindow.loadURL(
