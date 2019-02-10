@@ -132,9 +132,13 @@ class Time extends Component {
 
     //event select
     if (targetId === 'startBtn') {
-      confirmAlert(
-        confirmOption.startConfirm(_CURRENTDAY, msgNameStart, studyStart)
-      );
+      if (this.props.startTime !== '' && this.props.startTime !== null) {
+        alert('이미 시작된 상태입니다.');
+      } else {
+        confirmAlert(
+          confirmOption.startConfirm(_CURRENTDAY, msgNameStart, studyStart)
+        );
+      }
     } else if (targetId === 'stopBtn') {
       if (this.props.startTime !== '' && this.props.startTime !== null) {
         confirmAlert(confirmOption.stopConfirm(msgNameStop, studyStop));
